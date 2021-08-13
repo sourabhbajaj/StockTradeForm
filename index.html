@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/style.css" rel="stylesheet" />
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="tradeModal.js"></script>
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+    <button class="buy-button btn btn-success" data-symbol="ioc" data-price="120" data-trade-type="buy" data-quantity="10">Buy</button> 
+    <button class="sell-button btn btn-danger" data-symbol="ioc" data-price="120" data-trade-type="sell">Sell</button> 
+    <script>
+        $(document).ready(function () {
+            $(".buy-button, .sell-button").tradeModal({
+                onSubmit:function(data){
+                    console.log("data filled in form: ", data);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

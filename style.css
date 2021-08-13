@@ -1,0 +1,12 @@
+.stock-trade-modal .modal-header{
+    border-bottom: 0px;
+}
+
+.stock-trade-modal .modal-footer{
+    border-top: 0px;
+}
+
+#stock-purchase-modal .col-xs-12 .form-group{
+    padding-top:15px;
+    border-top:1px solid #eee;
+}
