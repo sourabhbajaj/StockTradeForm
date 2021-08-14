@@ -40,7 +40,7 @@ __HTML:__
 
 ## Options:
 
-| Option name | Description | Required | Accepted mode | Default |
+| Option | Description | Required | Accepted mode | Default |
 |-------------|-------------|----------|---------------|---------|
 | symbol | Symbol of the stock in question | Yes | Attribute in HTML | None |
 | price | Price of the stock in question | Yes | Attribute in HTML | None |
@@ -62,9 +62,9 @@ __HTML:__
 | onSubmit | Event called at the time when user submits the form | Complete data selected by the user |
 
 
-## Options
+## Methods
 
-| Option | Description | Parameters |
+| Method | Description | Parameters |
 |-------------|-------------|----------|
 | loading | Set modal in loading mode | 1. Boolean: to start or stop loading mode |
 | close | Close opened trade modal | None |
