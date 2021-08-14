@@ -21,6 +21,48 @@ This is a plugin that helps you integrate a stock trading form to your financial
     <script src="tradeModal.js"></script>
     ```
 
+## Running the example
+
+Make sure npm is installed globally
+
+- Step 1: Clone the plugin
+```
+    git clone https://github.com/sourabhbajaj/StockTradeForm.git
+```
+
+- Step 2: Enter the cloned directory
+
+```
+    cd StockTradeForm
+```
+
+- Step 3: checkout branch custom-for-tc
+
+```
+    git checkout custom-for-tc
+```
+
+- Step 4: install dependencies
+
+```
+    npm install
+```
+
+- Step 5: install http-server to spin up a quick local server
+
+```
+    npm install http-server
+```
+
+- Step 6: Run the server
+
+```
+    http-server
+```
+
+- Step 7: go to http://127.0.0.1:[PORT_NUMBER]/example.html in your browser
+
+
 ## Initialization
     
 __JavaScript:__
