@@ -106,6 +106,21 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="stock-trade-product" class="col-sm-2 control-label">Exchange</label>
+                                                <div class="col-sm-10">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="stock-trade-exchange" class="stock-trade-exchange" value="NSE" checked/> NSE
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="stock-trade-product"  class="stock-trade-product" value="BSE" disabled/> BSE
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-xs-6">
                                         <div class="form-group">
                                             <label for="stock-trade-quantity">Quantity</label>
@@ -144,16 +159,17 @@
                                                     <label class="radio-inline">
                                                         <input type="radio" name="stock-trade-order" class="stock-trade-order" value="limit"/> LIMIT
                                                     </label>
-                                                    <label class="radio-inline">
+                                                    <!--<label class="radio-inline">
                                                         <input type="radio" name="stock-trade-order" class="stock-trade-order" value="sl"/> SL
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="stock-trade-order" class="stock-trade-order" value="slm"/> SLM
-                                                    </label>
+                                                    </label>-->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!--
                                     <div class="col-xs-12 trigger-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
@@ -164,6 +180,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    -->
                                     <div class="col-xs-12 stoploss-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
@@ -174,7 +191,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 target-input-wrapper">
+                                    <!--<div class="col-xs-12 target-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
                                                 <label for="stock-trade-product" class="col-sm-3 control-label">Target (%)</label>
@@ -183,7 +200,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="col-xs-12 m-t-2">
                                         <div class="form-group">
                                             <div class="row">
@@ -193,10 +210,10 @@
                                                         <input type="radio" name="stock-trade-variety" class="stock-trade-variety" value="rglr" checked/> RGLR
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="stock-trade-variety" class="stock-trade-variety" value="co"/> CO
+                                                        <input type="radio" name="stock-trade-variety" class="stock-trade-variety" value="co" disabled/> CO
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="stock-trade-variety" class="stock-trade-variety" value="sl"/> AMO
+                                                        <input type="radio" name="stock-trade-variety" class="stock-trade-variety" value="sl" disabled/> AMO
                                                     </label>
                                                 </div>
                                             </div>
@@ -211,7 +228,7 @@
                                                         <input type="radio" name="stock-trade-validity" class="stock-trade-validity" value="day" checked/> DAY
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="stock-trade-validity" class="stock-trade-validity" value="ioc"/> IOC
+                                                        <input type="radio" name="stock-trade-validity" class="stock-trade-validity" value="ioc" disabled/> IOC
                                                     </label>
                                                 </div>
                                             </div>

@@ -18,13 +18,27 @@
 
 <body>
 
-    <button class="buy-button btn btn-success" data-symbol="ioc" data-price="120" data-trade-type="buy" data-quantity="10">Buy</button> 
-    <button class="sell-button btn btn-danger" data-symbol="ioc" data-price="120" data-trade-type="sell">Sell</button> 
+    <button class="buy-button btn btn-success" data-symbol="ASHOKLEY" data-price="120" data-trade-type="buy" data-quantity="10">Buy</button> 
+    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-price="120" data-trade-type="sell">Sell</button> 
     <script>
         $(document).ready(function () {
             $(".buy-button, .sell-button").tradeModal({
                 onSubmit:function(data){
                     console.log("data filled in form: ", data);
+                    const obj={
+                        order_stock_cd: data.symbol,
+                        order_xchng_cd: "NSE",
+                        order_product: data.product=="cnc"?"CASH":"MARGIN",
+                        order_type:data.order="market"?"M":"L",
+                        order_validity:data.validity=="day"?"T":"I",
+                        order_quantity:data.quantity,
+                        order_rate: data.order="market"?0:data.price,
+                        order_flow: data.tradeType=="buy"?"B":"S",
+                        order_stp_loss_price: data.stoploss,
+                        order_disclosed_qty: data.discQuantity                        
+                    };
+                    $(this).tradeModal("loading", true);
+                    console.log(JSON.stringify(obj));
                 }
             });
         });
