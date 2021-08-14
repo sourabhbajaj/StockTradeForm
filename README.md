@@ -60,3 +60,14 @@ __HTML:__
 | Event | Description | Data passed |
 |-------------|-------------|----------|
 | onSubmit | Event called at the time when user submits the form | Complete data selected by the user |
+
+
+## Options
+
+| Option | Description | Parameters |
+|-------------|-------------|----------|
+| loading | Set modal in loading mode | 1. Boolean: to start or stop loading mode |
+| close | Close opened trade modal | None |
+| error | Show error message to the user | 1. String: Error message |
+| success | Close modal with a success message alert | 1. String: text for success message |
+

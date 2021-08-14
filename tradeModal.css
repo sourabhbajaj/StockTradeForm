@@ -10,3 +10,37 @@
     padding-top:15px;
     border-top:1px solid #eee;
 }
+
+#stock-trade-modal .modal-dialog .modal-content{
+    position: relative;
+    overflow: hidden;
+}
+
+#stock-trade-modal  .modal-dialog .modal-content .loader{
+    position: absolute;
+    z-index: 1000;
+    background: rgba(255, 255,255, 0.9);
+    top:0px;
+    left:0px;
+    bottom:0px;
+    right:0px;
+    text-align: center;
+    font-size: 2em;
+}
+
+#stock-trade-modal  .modal-dialog .modal-content .loader svg{
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    position: absolute;
+    z-index: 1001;
+    top:50%;
+    left:50%;
+    margin-left: -100px;
+    margin-top: -100px;
+}
+
+#stock-trade-modal .text-red{
+    color:red;
+}
+

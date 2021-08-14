@@ -4,15 +4,26 @@
         if(typeof options=="string"){
             switch (options) {
                 case "error":
-                    
+                    $("#stock-trade-modal .help-block").html(attr1);
                 break;
             
                 case "success":
-                    
+                    if(attr1){
+                        alert(attr1);
+                    }
+                    $("#stock-trade-modal").modal("hide");
                 break;
 
                 case "close":
-                    
+                    $("#stock-trade-modal").modal("hide");
+                break;
+
+                case "loading":
+                    if(attr1){
+                        $("#stock-trade-modal .loader").removeClass("hidden");
+                    }else{
+                        $("#stock-trade-modal .loader").addClass("hidden");
+                    }             
                 break;
         
                 default:
@@ -71,6 +82,22 @@
                 <form class="stock-trade-form">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
+                            <div class="loader hidden">
+                                <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                    viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                                    <path fill="#666" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                                        <animateTransform 
+                                        attributeName="transform" 
+                                        attributeType="XML" 
+                                        type="rotate"
+                                        dur="1s" 
+                                        from="0 50 50"
+                                        to="360 50 50" 
+                                        repeatCount="indefinite" />
+                                    </path>
+                                </svg>
+                            </div>
+
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title stock-trade-symbol">ASHOKLEY</h4>
@@ -210,7 +237,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="col-xs-12 text-center">
+                                        <div class="help-block text-red"></div>
+                                    </div>
+                                </div>                                
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success stock-trade-buy-button">Buy</button>
@@ -328,7 +358,10 @@
             });
         }        
         
-        $(this).click(function(){            
+        $(this).click(function(){
+            $("#stock-trade-modal .loader").addClass("hidden");
+            $("#stock-trade-modal .help-block").html("");
+
             let tempSettings=settings;
             tempSettings.symbol=$(this).attr("data-symbol");
             tempSettings.tradeType=$(this).attr("data-trade-type");
