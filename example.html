@@ -54,7 +54,14 @@
                         success:function(data){
                             console.log(data);
                             if(data.Status!="200"){
-
+                                if(data.Status=="401"){
+                                    alert("You're not authorised to perform this request. Please login and come back to this page. We're not redirecting you to the login page.");
+                                    window.location.href="/?pageView=iciciLogin";
+                                    return;
+                                }
+                                else{
+                                    $(this).tradeModal('error', data.Error);
+                                }
                                 return;
                             }
 
