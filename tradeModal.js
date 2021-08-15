@@ -36,6 +36,7 @@
         // Extending settings from passed options
         const settings=$.extend({
             // These are the defaults.
+            instrument:"EQUITY",
             symbol:null,
             quantity:1, 
             price:null,
@@ -48,7 +49,7 @@
             validity:"day",
             discQuantity:1,
             slTrigger:0,
-            tradeType:null,
+            tradeType:null,            
             onSubmit:function(data){
                 console.log(data);
             }
@@ -100,31 +101,49 @@
 
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title stock-trade-symbol">ASHOKLEY</h4>
+                                <h4 class="modal-title stock-trade-symbol"></h4>
                                 <input type="hidden" name="stock-trade-symbol-input" class="stock-trade-symbol-input"/>
                                 <input type="hidden" name="stock-trade-type-input" class="stock-trade-type-input"/>
                             </div>
+                            
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <div class="row">
-                                                <label for="stock-trade-product" class="col-sm-2 control-label">Exchange</label>
+                                                <label for="stock-trade-exchange" class="col-sm-2 control-label">Exchange</label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline">
                                                         <input type="radio" name="stock-trade-exchange" class="stock-trade-exchange" value="NSE" checked/> NSE
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="stock-trade-product"  class="stock-trade-product" value="BSE" disabled/> BSE
+                                                        <input type="radio" name="stock-trade-exchange"  class="stock-trade-exchange" value="BSE" disabled/> BSE
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="stock-trade-expiry" class="col-sm-3 control-label">Expiry Date</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="stock-trade-expiry">                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 stock-trade-quantity-wrapper">
                                         <div class="form-group">
                                             <label for="stock-trade-quantity">Quantity</label>
                                             <input type="number" step="1" min="0" class="form-control stock-trade-quantity" name="stock-trade-quantity" placeholder="Quantity" value="1" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 stock-trade-lots-wrapper">
+                                        <div class="form-group">
+                                            <label for="stock-trade-lots">Number of Lots</label>
+                                            <input type="number" step="1" min="0" class="form-control stock-trade-quantity" name="stock-trade-quantity" placeholder="Number of lots" value="1" />
                                         </div>
                                     </div>
                                     <div class="col-xs-6">
@@ -181,7 +200,7 @@
                                         </div>
                                     </div>
                                     -->
-                                    <div class="col-xs-12 stoploss-input-wrapper">
+                                    <!-- <div class="col-xs-12 stoploss-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
                                                 <label for="stock-trade-stoploss" class="col-sm-3 control-label">Stoploss (%)</label>
@@ -190,7 +209,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!--<div class="col-xs-12 target-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
