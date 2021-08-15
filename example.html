@@ -38,7 +38,29 @@
                         order_disclosed_qty: data.discQuantity                        
                     };
                     $(this).tradeModal("loading", true);
-                    console.log(JSON.stringify(obj));
+
+                    $.ajax({
+                        url:"/icici",
+                        context:$(this),
+                        data:{
+                            action:"cashOrder",
+                            subAction:"placeCashOrder",
+                            JSONPostData: JSON.stringify(obj)
+                        },
+                        type:"post",
+                        complete:function(){
+                            $(this).tradeModal("loading", false);                            
+                        },
+                        success:function(data){
+                            console.log(data);
+                            if(data.Status!="200"){
+                                
+                                return;
+                            }
+
+                            $(this).tradeModal("success", 'Successfully placed order.');
+                        }
+                    });
                 }
             });
         });
