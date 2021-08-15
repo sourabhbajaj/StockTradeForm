@@ -47,7 +47,7 @@
                             subAction:"placeCashOrder",
                             JSONPostData: JSON.stringify(obj)
                         },
-                        type:"post",
+                        method:"post",
                         complete:function(){
                             $(this).tradeModal("loading", false);                            
                         },
