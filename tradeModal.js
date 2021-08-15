@@ -103,7 +103,7 @@
 
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title stock-trade-symbol">ASHOKLEY</h4>
+                                <h4 class="modal-title stock-trade-symbol"></h4>
                                 <input type="hidden" name="stock-trade-symbol-input" class="stock-trade-symbol-input"/>
                                 <input type="hidden" name="stock-trade-type-input" class="stock-trade-type-input"/>
                             </div>
@@ -184,7 +184,7 @@
                                         </div>
                                     </div>
                                     -->
-                                    <div class="col-xs-12 stoploss-input-wrapper">
+                                    <!-- <div class="col-xs-12 stoploss-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
                                                 <label for="stock-trade-stoploss" class="col-sm-3 control-label">Stoploss (%)</label>
@@ -193,7 +193,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!--<div class="col-xs-12 target-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
