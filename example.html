@@ -18,8 +18,8 @@
 
 <body>
 
-    <button class="buy-button btn btn-success" data-symbol="ASHOKLEY" data-price="120" data-trade-type="buy" data-quantity="10">Buy</button> 
-    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-price="120" data-trade-type="sell">Sell</button> 
+    <button class="buy-button btn btn-success" data-symbol="ASHOKLEY" data-price="120" data-trade-type="buy" data-quantity="10">B</button> 
+    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-price="120" data-trade-type="sell">S</button> 
     <script>
         $(document).ready(function () {
             $(".buy-button, .sell-button").tradeModal({
@@ -54,7 +54,7 @@
                         success:function(data){
                             console.log(data);
                             if(data.Status!="200"){
-                                
+
                                 return;
                             }
 
