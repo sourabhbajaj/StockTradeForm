@@ -533,7 +533,7 @@
             tempSettings.symbol=$(this).attr("data-symbol");
             tempSettings.tradeType=$(this).attr("data-trade-type");
 
-            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper").removeClass("hidden");
+            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper").removeClass("hidden");
             $("#stock-trade-modal .stock-trade-expiry").empty();
             if($(this).attr("data-instrument")=="EQUITY"){
                 $(".stock-trade-lots-wrapper, .stock-trade-expiry-wrapper, .stock-trade-strike-price-wrapper,  .stock-trade-option-type-wrapper").addClass("hidden");
@@ -545,7 +545,6 @@
                     success:function(response){
                         console.log(response);
                         if(response.success){
-                            console.log("Response success true.");
                             for(let i=0;i<response.data.length;i++){
                                 if(i==0){
                                     $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
@@ -555,6 +554,7 @@
                                     $("<option/>").val(response.data[i].expiryDate).attr("data-ltp", response.data[i].ltp).append(response.data[i].expiryDate)
                                 );
                             }
+                            $("#stock-trade-modal .stock-trade-expiry").change();
                         }
                     }
                 });
