@@ -6,6 +6,11 @@ $(".trigger-strategy-trade").click(function(e){
     const indstk=$(this).attr("data-indstk");
     const tr=$(".strategy-details-table tr");
     const apiObj=[];
+
+    if(!confirm("Are you sure you want to place this order?")){
+        return;
+    }
+
     for(let i=1;i<tr.length;i++){
         const td=$(tr[i]).find("td");
         const obj={
@@ -48,7 +53,7 @@ $(".trigger-strategy-trade").click(function(e){
                         );
                     }else{
                         $(".options-strategy-order-help-block").append(
-                            $("<div/>").addClass("text-red").append("Order "+(i+1)+": "+data.Error)
+                            $("<div/>").addClass("text-red").append("Order "+(i+1)+": "+data.Error||data.Success.message)
                         );
                     }
                 }else{
