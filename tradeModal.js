@@ -52,7 +52,8 @@
             validity:"day",
             discQuantity:1,
             slTrigger:0,
-            tradeType:null,            
+            tradeType:null,
+            indstk:"S",          
             onSubmit:function(data){
                 console.log(data);
             }
@@ -75,6 +76,10 @@
                 if(!$(elms[i]).attr("data-price")||$(elms[i]).attr("data-price")==""){
                     console.error("Stock price not defined. Please define stock price in 'data-price' attribute of the trigger button.");
                     return;
+                }
+
+                if(!$(elms[i]).attr("data-indstk")||$(elms[i]).attr("data-indstk")==""){
+                    $(elms[i]).attr("data-indstk", settings.indstk);
                 }
 
                 if(!$(elms[i]).attr("data-quantity")||$(elms[i]).attr("data-quantity")==""){
@@ -155,6 +160,7 @@
                                 <input type="hidden" name="stock-trade-type-input" class="stock-trade-type-input"/>
                                 <input type="hidden" name="stock-trade-lot-size-input" class="stock-trade-lot-size-input"/>
                                 <input type="hidden" name="stock-trade-instrument" class="stock-trade-instrument"/>
+                                <input type="hidden" name="stock-trade-indstk" class="stock-trade-indstk"/>
                             </div>
                             
                             <div class="modal-body">
@@ -514,6 +520,7 @@
                 tempSettings.variety=$(this).find(".stock-trade-variety:checked").val();
                 tempSettings.validity=$(this).find(".stock-trade-validity:checked").val();
                 tempSettings.discQuantity=$(this).find(".stock-trade-disc-quantity").val();
+                tempSettings.indstk=$(this).find(".stock-trade-indstk").val();
 
                 console.log("Order 0.1: ", {...tempSettings}, $(this).find(".stock-trade-order:checked").val());
 
@@ -553,6 +560,7 @@
             $("#stock-trade-modal .loader").addClass("hidden");
             $("#stock-trade-modal .help-block").html("");
             $("#stock-trade-modal .stock-trade-instrument").val($(this).attr("data-instrument"));            
+            $("#stock-trade-modal .stock-trade-indstk").val($(this).attr("data-indstk"));            
 
             let tempSettings=settings;
             tempSettings.symbol=$(this).attr("data-symbol");

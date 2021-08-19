@@ -64,7 +64,9 @@
                             order_flow: data.tradeType=="buy"?"B":"S",
                             order_stp_loss_price: 0,
                             order_disclosed_qty: data.discQuantity,
-                            order_opt_exer_type: "*E"
+                            order_opt_exer_type: "*E",
+                            order_validity:"T",
+                            order_ctgry_indstk: data.indstk
                         };
                     }else if(data.instrument=="OPTIONS"){
                         action="foOrder", subAction="placeFOOrder"
@@ -80,7 +82,9 @@
                             order_flow: data.tradeType=="buy"?"B":"S",
                             order_stp_loss_price: 0,
                             order_disclosed_qty: data.discQuantity,
-                            order_opt_exer_type: data.optionType
+                            order_opt_exer_type: data.optionType,
+                            order_validity:"T",
+                            order_ctgry_indstk: data.indstk
                         };
                     }
 
