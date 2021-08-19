@@ -391,6 +391,12 @@
                 }else{
                     $("#stock-trade-modal .stock-trade-price").prop("disabled", false);
                 }
+
+                if($("#stock-trade-modal input[name='stock-trade-order']:checked").val()=="limit"){
+                    $(".stock-trade-last-traded-time").addClass("hidden");
+                }else{
+                    $(".stock-trade-last-traded-time").removeClass("hidden");
+                }
                 
         
             });
@@ -434,9 +440,11 @@
                 e.preventDefault();
                 if($("#stock-trade-modal .stock-trade-instrument").val()=="FUTURES"){
                     let ltp=$(this).find("option:selected").attr("data-ltp");
+                    let ltt=$(this).find("option:selected").attr("data-last-traded-time");
                     $("#stock-trade-modal .stock-trade-price").val(ltp);
+                    $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
+
                 }else if($("#stock-trade-modal .stock-trade-instrument").val()=="OPTIONS"){
-                    console.log("OPTIONS");
                     let json=JSON.parse($(this).find("option:selected").attr("data-json"));
                     $("#stock-trade-modal .stock-trade-strike-price").empty();
                     for(let i=0;i<json.length;i++){
@@ -447,8 +455,10 @@
                         for(let j=0;j<json[i].putCallData.length;j++){
                             if(json[i].putCallData[j].optionType=="PE"){
                                 option.attr("data-put-price", json[i].putCallData[j].ltp);
+                                option.attr("data-last-traded-time", json[i].putCallData[j].lastTradedTime);
                             }else if(json[i].putCallData[j].optionType=="CE"){
                                 option.attr("data-call-price", json[i].putCallData[j].ltp);
+                                option.attr("data-last-traded-time", json[i].putCallData[j].lastTradedTime);
                             }
                         }                        
                         $("#stock-trade-modal .stock-trade-strike-price").append(option);
@@ -460,8 +470,13 @@
             $("#stock-trade-modal .stock-trade-strike-price").change(function(){
                 if($("#stock-trade-modal .stock-trade-option-type:checked").val()=="CE"){
                     $(".stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
+                    let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
+                    $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
                 }else{
                     $(".stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
+                    let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
+                    $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
+
                 }
             });
 
@@ -537,17 +552,16 @@
         $(this).click(function(){
             $("#stock-trade-modal .loader").addClass("hidden");
             $("#stock-trade-modal .help-block").html("");
-            $("#stock-trade-modal .stock-trade-instrument").val($(this).attr("data-instrument"));
-
+            $("#stock-trade-modal .stock-trade-instrument").val($(this).attr("data-instrument"));            
 
             let tempSettings=settings;
             tempSettings.symbol=$(this).attr("data-symbol");
             tempSettings.tradeType=$(this).attr("data-trade-type");
 
-            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper").removeClass("hidden");
+            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper, .stock-trade-spot-price").removeClass("hidden");
             $("#stock-trade-modal .stock-trade-expiry").empty();
-            if($(this).attr("data-instrument")=="EQUITY"){
-                $(".stock-trade-lots-wrapper, .stock-trade-expiry-wrapper, .stock-trade-strike-price-wrapper,  .stock-trade-option-type-wrapper").addClass("hidden");
+            if($(this).attr("data-instrument")=="EQUITY"){                
+                $(".stock-trade-lots-wrapper, .stock-trade-expiry-wrapper, .stock-trade-strike-price-wrapper,  .stock-trade-option-type-wrapper, .stock-trade-spot-price").addClass("hidden");
             }else if($(this).attr("data-instrument")=="FUTURES"){
                 $(".stock-trade-quantity-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper").addClass("hidden");
                 $.ajax({
@@ -557,7 +571,12 @@
                         console.log(response);
                         if(response.success){
                             for(let i=0;i<response.data.length;i++){
-                                let option = $("<option/>").val(response.data[i].expiryDate).attr("data-ltp", response.data[i].ltp).append(response.data[i].expiryDate);
+                                let option = $("<option/>")
+                                    .val(response.data[i].expiryDate)
+                                    .attr("data-ltp", response.data[i].ltp)
+                                    .attr("data-last-traded-time", response.data[i].lastTradedTime)
+                                    .append(response.data[i].expiryDate);
+
                                 if(i==0){
                                     $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
                                     $(".stock-trade-lot-size-input").val(response.data[i].lotSize);                                    
