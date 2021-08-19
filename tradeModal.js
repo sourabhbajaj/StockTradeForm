@@ -579,7 +579,7 @@
                     context:$("#stock-trade-modal .stock-trade-expiry"),
                     success:function(response){
                         if(response.success){
-                            $(".stock-trade-spot-price span")
+                            $(".stock-trade-spot-price span").text(response.spotPrice);
                             for(let i=0;i<response.data.length;i++){                                
                                 if(i==0){
                                     $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);

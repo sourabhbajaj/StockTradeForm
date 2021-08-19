@@ -34,7 +34,6 @@ $(".trigger-strategy-trade").click(function(e){
         },
         method:"post",
         complete:function(){
-            $(this).tradeModal("loading", false);                            
         },
         success:function(response){
             for(let i=0;i<response.length; i++){
