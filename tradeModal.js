@@ -149,6 +149,7 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title stock-trade-symbol"></h4>
+                                <div class="stock-trade-spot-price">Spot price: <span></span></div>
                                 <input type="hidden" name="stock-trade-symbol-input" class="stock-trade-symbol-input"/>
                                 <input type="hidden" name="stock-trade-fno-symbol-input" class="stock-trade-fno-symbol-input"/>
                                 <input type="hidden" name="stock-trade-type-input" class="stock-trade-type-input"/>
@@ -210,6 +211,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-xs-6 stock-trade-quantity-wrapper">
                                         <div class="form-group">
                                             <label for="stock-trade-quantity">Quantity</label>
@@ -226,9 +229,12 @@
                                         <div class="form-group">
                                             <label for="stock-trade-price">Price</label>
                                             <input type="number" step="0.01" min="0" class="form-control stock-trade-price" placeholder="Price" value="1" />
+                                            <div class="stock-trade-last-traded-time"></div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12">
+                                </div>
+                                <div class="row">    
+                                    <div class="col-xs-12 stock-trade-product-wrapper">
                                         <div class="form-group">
                                             <div class="row">
                                                 <label for="stock-trade-product" class="col-sm-2 control-label">Product</label>
@@ -435,7 +441,7 @@
                     $("#stock-trade-modal .stock-trade-strike-price").empty();
                     for(let i=0;i<json.length;i++){
                         let option=$("<option/>").val(json[i].strikePrice).append(json[i].strikePrice);
-                        if(i==0){
+                        if((i+1)==Math.ceil(json.length/2)){
                             option.prop("selected", true);
                         }
                         for(let j=0;j<json[i].putCallData.length;j++){
@@ -538,12 +544,12 @@
             tempSettings.symbol=$(this).attr("data-symbol");
             tempSettings.tradeType=$(this).attr("data-trade-type");
 
-            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper").removeClass("hidden");
+            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper").removeClass("hidden");
             $("#stock-trade-modal .stock-trade-expiry").empty();
             if($(this).attr("data-instrument")=="EQUITY"){
                 $(".stock-trade-lots-wrapper, .stock-trade-expiry-wrapper, .stock-trade-strike-price-wrapper,  .stock-trade-option-type-wrapper").addClass("hidden");
             }else if($(this).attr("data-instrument")=="FUTURES"){
-                $(".stock-trade-quantity-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper").addClass("hidden");
+                $(".stock-trade-quantity-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper").addClass("hidden");
                 $.ajax({
                     url:"/dummydata/futures.json?action=getFuturesData&symbol="+tempSettings.symbol,
                     method:"get",
@@ -551,12 +557,14 @@
                         console.log(response);
                         if(response.success){
                             for(let i=0;i<response.data.length;i++){
+                                let option = $("<option/>").val(response.data[i].expiryDate).attr("data-ltp", response.data[i].ltp).append(response.data[i].expiryDate);
                                 if(i==0){
                                     $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
-                                    $(".stock-trade-lot-size-input").val(response.data[i].lotSize);
+                                    $(".stock-trade-lot-size-input").val(response.data[i].lotSize);                                    
                                 }
+                                
                                 $("#stock-trade-modal .stock-trade-expiry").append(
-                                    $("<option/>").val(response.data[i].expiryDate).attr("data-ltp", response.data[i].ltp).append(response.data[i].expiryDate)
+                                    option
                                 );
                             }
                             $("#stock-trade-modal .stock-trade-expiry").change();
@@ -564,16 +572,15 @@
                     }
                 });
             }else {
-                $(".stock-trade-quantity-wrapper").addClass("hidden");
+                $(".stock-trade-quantity-wrapper, .stock-trade-product-wrapper").addClass("hidden");
                 $.ajax({
                     url:"/dummydata/options.json?action=getOptionsData&symbol="+tempSettings.symbol,
                     method:"get",
                     context:$("#stock-trade-modal .stock-trade-expiry"),
                     success:function(response){
-                        console.log(response);
                         if(response.success){
-                            console.log("Response success true.");
-                            for(let i=0;i<response.data.length;i++){
+                            $(".stock-trade-spot-price span")
+                            for(let i=0;i<response.data.length;i++){                                
                                 if(i==0){
                                     $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
                                     $(".stock-trade-lot-size-input").val(response.data[i].lotSize);

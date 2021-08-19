@@ -30,7 +30,7 @@ $(".trigger-strategy-trade").click(function(e){
         data:{
             action:"foStrategyOrder",
             subAction:"placeFOOrder",
-            JSONPostData: JSON.stringify(obj)
+            JSONPostData: JSON.stringify(apiObj)
         },
         method:"post",
         complete:function(){
