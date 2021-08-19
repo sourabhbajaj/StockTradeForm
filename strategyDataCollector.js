@@ -3,6 +3,7 @@ $(".trigger-strategy-trade").click(function(e){
     e.preventDefault();
     const symbol=$(this).attr("data-symbol");
     const lotSize=$(this).attr("data-lot-size");
+    const indstk=$(this).attr("data-indstk");
     const tr=$(".strategy-details-table tr");
     const apiObj=[];
     for(let i=1;i<tr.length;i++){
@@ -19,7 +20,9 @@ $(".trigger-strategy-trade").click(function(e){
             order_flow: $(td[4]).text()=="Buy"?"B":"S",
             order_stp_loss_price: 0,
             order_disclosed_qty: 0,
-            order_opt_exer_type: $(td[0]).text()=="FUTURES"?"*E":($(td[0]).text()=="CALL"?"CE":"PE")
+            order_opt_exer_type: $(td[0]).text()=="FUTURES"?"*E":($(td[0]).text()=="CALL"?"CE":"PE"),
+            order_validity:"T",
+            order_ctgry_indstk: indstk
         };
         apiObj.push(obj);
     }
