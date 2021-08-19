@@ -494,6 +494,9 @@
                 tempSettings.validity=$(this).find(".stock-trade-validity:checked").val();
                 tempSettings.discQuantity=$(this).find(".stock-trade-disc-quantity").val();
 
+                console.log("Order 0.1: ", {...tempSettings}, $(this).find(".stock-trade-order:checked").val());
+
+
                 if(tempSettings.product=="cnc"){
                     tempSettings.stoploss=$(this).find(".stock-trade-stoploss").val();
                     tempSettings.target=$(this).find(".stock-trade-target").val();    
@@ -515,6 +518,8 @@
                 }else{
                     delete tempSettings.slTrigger;                   
                 }
+
+                console.log("Order: ", {...tempSettings}, $(this).find(".stock-trade-order:checked").val());
 
                 settings.onSubmit(tempSettings);
             });
