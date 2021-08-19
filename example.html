@@ -20,31 +20,77 @@
 
     <button class="buy-button btn btn-success" data-symbol="ASHOKLEY" data-price="120" data-trade-type="buy" data-quantity="10">B</button> 
     <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-price="120" data-trade-type="sell">S</button> 
+
+    <h1>Futures</h1>
+    <button class="buy-button btn btn-success" data-symbol="ASHOKLEY" data-instrument="FUTURES" data-price="120" data-trade-type="buy" data-quantity="10">B</button> 
+    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-instrument="FUTURES" data-price="120" data-trade-type="sell">S</button> 
+
+    <h1>Options</h1>
+    <button class="buy-button btn btn-success" data-symbol="ASHOKLEY" data-instrument="OPTIONS" data-price="120" data-trade-type="buy" data-quantity="10">B</button> 
+    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-instrument="OPTIONS" data-price="120" data-trade-type="sell">S</button> 
+
     <script>
         $(document).ready(function () {
             $(".buy-button, .sell-button").tradeModal({
                 onSubmit:function(data){
-                    console.log("data filled in form: ", data);
-                    const obj={
-                        order_stock_cd: data.symbol,
-                        order_xchng_cd: "NSE",
-                        order_product: data.product=="cnc"?"CASH":"MARGIN",
-                        order_type:data.order="market"?"M":"L",
-                        order_validity:data.validity=="day"?"T":"I",
-                        order_quantity:data.quantity,
-                        order_rate: data.order="market"?0:data.price,
-                        order_flow: data.tradeType=="buy"?"B":"S",
-                        order_stp_loss_price: data.stoploss,
-                        order_disclosed_qty: data.discQuantity                        
-                    };
+                    console.log(data);
+                    let action="cashOrder", subAction="placeCashOrder";
                     $(this).tradeModal("loading", true);
+                    let obj={};
+                    if(data.instrument=="EQUITY"){
+                        obj={
+                            order_stock_cd: data.symbol,
+                            order_xchng_cd: "NSE",
+                            order_product: data.product=="cnc"?"CASH":"MARGIN",
+                            order_type:data.order="market"?"M":"L",
+                            order_validity:data.validity=="day"?"T":"I",
+                            order_quantity:data.quantity,
+                            order_rate: data.order="market"?0:data.price,
+                            order_flow: data.tradeType=="buy"?"B":"S",
+                            order_stp_loss_price: 0,
+                            order_disclosed_qty: data.discQuantity
+                        };
+                    }else if(data.instrument=="FUTURES"){
+                        action="foOrder", subAction="placeFOOrder"
+                        obj={
+                            order_stock_cd: data.fnoSymbol,
+                            order_xchng_cd: "NFO",
+                            order_product:"Futures",
+                            order_exp_date: data.expiry,
+                            order_strike_price: data.strikePrice*100, 
+                            order_type: data.order="market"?"M":"L",
+                            order_quantity: data.lotSize * data.noOfLots,
+                            order_rate: data.order="market"?0:(data.price*100),
+                            order_flow: data.tradeType=="buy"?"B":"S",
+                            order_stp_loss_price: 0,
+                            order_disclosed_qty: data.discQuantity,
+                            order_opt_exer_type: "*E"
+                        };
+                    }else if(data.instrument=="OPTIONS"){
+                        action="foOrder", subAction="placeFOOrder"
+                        obj={
+                            order_stock_cd: data.fnoSymbol,
+                            order_xchng_cd: "NFO",
+                            order_product:"Options",
+                            order_exp_date: data.expiry,
+                            order_strike_price: data.strikePrice * 100,
+                            order_type: data.order="market"?"M":"L",
+                            order_quantity: data.lotSize * data.noOfLots,
+                            order_rate: data.order="market"?0:(data.price*100),
+                            order_flow: data.tradeType=="buy"?"B":"S",
+                            order_stp_loss_price: 0,
+                            order_disclosed_qty: data.discQuantity,
+                            order_opt_exer_type: data.optionType
+                        };
+                    }
+
 
                     $.ajax({
                         url:"/icici",
                         context:$(this),
                         data:{
-                            action:"cashOrder",
-                            subAction:"placeCashOrder",
+                            action:action,
+                            subAction:subAction,
                             JSONPostData: JSON.stringify(obj)
                         },
                         method:"post",
