@@ -44,7 +44,7 @@
                     $("#stock-trade-modal .help-block").html(attr1);
                     setTimeout(function(){
                         $("#stock-trade-modal .help-block").html("");
-                    }, 5000);
+                    }, 30000);
                 break;
             
                 case "success":
