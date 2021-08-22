@@ -1,4 +1,41 @@
 (function ( $ ) {
+
+    $.fn.tradeDetailsModal=function(options, attr1, attr2){
+        {
+            console.log("Trade details modal created");
+            let elms=$(this);
+            for(let i=0;i<elms.length;i++){
+                if(!$(elms[i]).attr("data-symbol")||$(elms[i]).attr("data-symbol")==""){
+                    console.error("Stock symbol not defined. Please define stock symbol in 'data-symbol' attribute of the trigger button.");
+                    return;
+                }
+
+                if(!$(elms[i]).attr("data-trade-type")||$(elms[i]).attr("data-trade-type")==""){
+                    console.error("Stock trade type not defined. Please define stock symbol in 'data-trade-type' attribute of the trigger button.");
+                    return;
+                }
+
+                if(!$(elms[i]).attr("data-price")||$(elms[i]).attr("data-price")==""){
+                    console.error("Stock price not defined. Please define stock price in 'data-price' attribute of the trigger button.");
+                    return;
+                }
+            }
+        }
+        $(this).click(function(e){
+            e.preventDefault();
+            $("#stock-trade-details-modal .stock-trade-symbol").text($(this).attr("data-symbol"));
+            $("#stock-trade-details-modal .stock-trade-type").text($(this).attr("data-trade-type"));
+            $("#stock-trade-details-modal .stock-trade-price").text($(this).attr("data-trade-price"));
+
+
+            if($(this).attr("data-target")&&$(this).attr("data-target")!=""){
+
+            }else{
+
+            }
+            $("#stock-trade-details-modal").modal("show");
+        });
+    }
  
     $.fn.tradeModal = function(options, attr1, attr2) {
         if(typeof options=="string"){
@@ -39,6 +76,7 @@
         // Extending settings from passed options
         const settings=$.extend({
             // These are the defaults.
+            id: null,
             instrument:"EQUITY",
             symbol:null,
             quantity:1, 
@@ -62,7 +100,7 @@
         // Early error handling at the time of initialization in case any element doesn't have required attributes
         {
             let elms=$(this);
-            for(let i=0;i<elms.length;i++){
+            for(let i=0;i<elms.length;i++){                
                 if(!$(elms[i]).attr("data-symbol")||$(elms[i]).attr("data-symbol")==""){
                     console.error("Stock symbol not defined. Please define stock symbol in 'data-symbol' attribute of the trigger button.");
                     return;
@@ -155,12 +193,14 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title stock-trade-symbol"></h4>
                                 <div class="stock-trade-spot-price">Spot price: <span></span></div>
+                                <input type="hidden" name="stock-trade-id" class="stock-trade-id"/>
                                 <input type="hidden" name="stock-trade-symbol-input" class="stock-trade-symbol-input"/>
                                 <input type="hidden" name="stock-trade-fno-symbol-input" class="stock-trade-fno-symbol-input"/>
                                 <input type="hidden" name="stock-trade-type-input" class="stock-trade-type-input"/>
                                 <input type="hidden" name="stock-trade-lot-size-input" class="stock-trade-lot-size-input"/>
                                 <input type="hidden" name="stock-trade-instrument" class="stock-trade-instrument"/>
                                 <input type="hidden" name="stock-trade-indstk" class="stock-trade-indstk"/>
+                                <input type="hidden" name="stock-trade-extra-params" class="stock-trade-extra-params"/>
                             </div>
                             
                             <div class="modal-body">
@@ -399,12 +439,10 @@
                 }
 
                 if($("#stock-trade-modal input[name='stock-trade-order']:checked").val()=="limit"){
-                    $(".stock-trade-last-traded-time").addClass("hidden");
+                    $("#stock-trade-modal .stock-trade-last-traded-time").addClass("hidden");
                 }else{
-                    $(".stock-trade-last-traded-time").removeClass("hidden");
-                }
-                
-        
+                    $("#stock-trade-modal .stock-trade-last-traded-time").removeClass("hidden");
+                }        
             });
         
             $("#stock-trade-modal input[name='stock-trade-validity']").change(function(e){
@@ -444,6 +482,7 @@
 
             $("#stock-trade-modal .stock-trade-expiry").change(function(e){
                 e.preventDefault();
+                console.log("Change triggered.");
                 if($("#stock-trade-modal .stock-trade-instrument").val()=="FUTURES"){
                     let ltp=$(this).find("option:selected").attr("data-ltp");
                     let ltt=$(this).find("option:selected").attr("data-last-traded-time");
@@ -453,11 +492,24 @@
                 }else if($("#stock-trade-modal .stock-trade-instrument").val()=="OPTIONS"){
                     let json=JSON.parse($(this).find("option:selected").attr("data-json"));
                     $("#stock-trade-modal .stock-trade-strike-price").empty();
+
+                    let strikePrice=null
+                    if($("#stock-trade-modal .stock-trade-expiry option:selected").attr("data-strike-price")&&$("#stock-trade-modal .stock-trade-expiry option:selected").attr("data-strike-price")!=""){
+                        strikePrice=$("#stock-trade-modal .stock-trade-expiry option:selected").attr("data-strike-price");
+                    }
+
                     for(let i=0;i<json.length;i++){
                         let option=$("<option/>").val(json[i].strikePrice).append(json[i].strikePrice);
-                        if((i+1)==Math.ceil(json.length/2)){
+                        
+                        if(strikePrice!=null){
+                            if(strikePrice==json[i].strikePrice){
+                                option.prop("selected", true);                                
+                            }
+                        }else if((i+1)==Math.ceil(json.length/2)){
                             option.prop("selected", true);
                         }
+
+
                         for(let j=0;j<json[i].putCallData.length;j++){
                             if(json[i].putCallData[j].optionType=="PE"){
                                 option.attr("data-put-price", json[i].putCallData[j].ltp);
@@ -475,11 +527,11 @@
 
             $("#stock-trade-modal .stock-trade-strike-price").change(function(){
                 if($("#stock-trade-modal .stock-trade-option-type:checked").val()=="CE"){
-                    $(".stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
+                    $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
                     let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
                     $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
                 }else{
-                    $(".stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
+                    $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
                     let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
                     $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
 
@@ -488,9 +540,9 @@
 
             $("#stock-trade-modal .stock-trade-option-type").change(function(){
                 if($("#stock-trade-modal .stock-trade-option-type:checked").val()=="CE"){
-                    $(".stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
+                    $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
                 }else{
-                    $(".stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
+                    $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
                 }
             });
         
@@ -504,7 +556,8 @@
                 e.preventDefault();
                 let tempSettings={...settings};
                 delete tempSettings.onSubmit;
-                tempSettings.optionType=$(this).find(".stock-trade-option-type").val();
+                tempSettings.id=$(this).find(".stock-trade-id").val();
+                tempSettings.optionType=$(this).find(".stock-trade-option-type:checked").val();
                 tempSettings.symbol=$(this).find(".stock-trade-symbol-input").val();
                 tempSettings.instrument=$(this).find(".stock-trade-instrument").val();
                 tempSettings.lotSize=$(this).find(".stock-trade-lot-size-input").val();
@@ -548,8 +601,12 @@
                 }
 
                 console.log("Order: ", {...tempSettings}, $(this).find(".stock-trade-order:checked").val());
-
-                settings.onSubmit(tempSettings);
+                let extraParams=null;
+                if($("#stock-trade-modal .stock-trade-extra-params").val()!=""){
+                    extraParams=$("#stock-trade-modal .stock-trade-extra-params").val();                    
+                    extraParams=JSON.parse(extraParams);
+                }
+                settings.onSubmit(tempSettings, extraParams);
             });
         }
     
@@ -560,24 +617,42 @@
             $("#stock-trade-modal .loader").addClass("hidden");
             $("#stock-trade-modal .help-block").html("");
             $("#stock-trade-modal .stock-trade-instrument").val($(this).attr("data-instrument"));            
-            $("#stock-trade-modal .stock-trade-indstk").val($(this).attr("data-indstk"));            
+            $("#stock-trade-modal .stock-trade-indstk").val($(this).attr("data-indstk"));
+
+                        
 
             let tempSettings=settings;
             tempSettings.symbol=$(this).attr("data-symbol");
             tempSettings.tradeType=$(this).attr("data-trade-type");
 
-            $(".stock-trade-expiry-wrapper, .stock-trade-quantity-wrapper, .stock-trade-lots-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper, .stock-trade-spot-price").removeClass("hidden");
+            if($(this).attr("data-id")&&$(this).attr("data-id")!=""){
+                tempSettings.id=$(this).attr("data-id");
+            }else{
+                tempSettings.id=null;
+            }
+
+            $("#stock-trade-modal .stock-trade-expiry-wrapper, #stock-trade-modal .stock-trade-quantity-wrapper, #stock-trade-modal .stock-trade-lots-wrapper, #stock-trade-modal .stock-trade-strike-price-wrapper, #stock-trade-modal .stock-trade-option-type-wrapper, #stock-trade-modal .stock-trade-product-wrapper, #stock-trade-modal .stock-trade-spot-price").removeClass("hidden");
             $("#stock-trade-modal .stock-trade-expiry").empty();
             if($(this).attr("data-instrument")=="EQUITY"){                
-                $(".stock-trade-lots-wrapper, .stock-trade-expiry-wrapper, .stock-trade-strike-price-wrapper,  .stock-trade-option-type-wrapper, .stock-trade-spot-price").addClass("hidden");
+                $("#stock-trade-modal .stock-trade-lots-wrapper, #stock-trade-modal .stock-trade-expiry-wrapper, #stock-trade-modal .stock-trade-strike-price-wrapper,  #stock-trade-modal .stock-trade-option-type-wrapper, #stock-trade-modal .stock-trade-spot-price").addClass("hidden");
             }else if($(this).attr("data-instrument")=="FUTURES"){
-                $(".stock-trade-quantity-wrapper, .stock-trade-strike-price-wrapper, .stock-trade-option-type-wrapper, .stock-trade-product-wrapper").addClass("hidden");
+                if(tempSettings.id){
+                    $(".stock-trade-expiry").prop("disabled", true);
+                }else{
+                    $(".stock-trade-expiry").prop("disabled", false);
+                }
+
+                $("#stock-trade-modal .stock-trade-quantity-wrapper, #stock-trade-modal .stock-trade-strike-price-wrapper, #stock-trade-modal .stock-trade-option-type-wrapper, #stock-trade-modal .stock-trade-product-wrapper").addClass("hidden");
                 $.ajax({
                     url:"/dummydata/futures.json?action=getFuturesData&symbol="+tempSettings.symbol,
                     method:"get",
-                    success:function(response){
-                        console.log(response);
+                    context:$(this),
+                    success:function(response){                        
                         if(response.success){
+                            let expiryDate=null;
+                            if($(this).attr("data-expiry")&&$(this).attr("data-expiry")!=""){
+                                expiryDate=$(this).attr("data-expiry");
+                            }
                             for(let i=0;i<response.data.length;i++){
                                 let option = $("<option/>")
                                     .val(response.data[i].expiryDate)
@@ -586,40 +661,64 @@
                                     .append(response.data[i].expiryDate);
 
                                 if(i==0){
-                                    $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
-                                    $(".stock-trade-lot-size-input").val(response.data[i].lotSize);                                    
+                                    $("#stock-trade-modal .stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
+                                    $("#stock-trade-modal .stock-trade-lot-size-input").val(response.data[i].lotSize);                                    
+                                }
+
+                                if(expiryDate!=null&&response.data[i].expiryDate==expiryDate){
+                                    option.prop("selected", true);
                                 }
                                 
-                                $("#stock-trade-modal .stock-trade-expiry").append(
-                                    option
-                                );
+                                $("#stock-trade-modal .stock-trade-expiry").append( option );
                             }
                             $("#stock-trade-modal .stock-trade-expiry").change();
                         }
                     }
                 });
             }else {
-                $(".stock-trade-quantity-wrapper, .stock-trade-product-wrapper").addClass("hidden");
+                if(tempSettings.id){
+                    $(".stock-trade-option-type, .stock-trade-expiry, .stock-trade-strike-price").prop("disabled", true);
+                }else{
+                    $(".stock-trade-option-type, .stock-trade-expiry, .stock-trade-strike-price").prop("disabled", false);
+                }
+
+                $("#stock-trade-modal .stock-trade-quantity-wrapper, #stock-trade-modal .stock-trade-product-wrapper").addClass("hidden");
                 $.ajax({
                     url:"/dummydata/options.json?action=getOptionsData&symbol="+tempSettings.symbol,
                     method:"get",
-                    context:$("#stock-trade-modal .stock-trade-expiry"),
+                    context:$(this),
                     success:function(response){
                         if(response.success){
-                            $(".stock-trade-spot-price span").text(response.spotPrice);
-                            for(let i=0;i<response.data.length;i++){                                
+                            $("#stock-trade-modal .stock-trade-spot-price span").text(response.spotPrice);
+                            let expiryDate=null, strikePrice=null;
+                            if($(this).attr("data-expiry")&&$(this).attr("data-expiry")!=""){
+                                expiryDate=$(this).attr("data-expiry");
+                            }
+                            if($(this).attr("data-strike-price")&&$(this).attr("data-strike-price")!=""){
+                                strikePrice=$(this).attr("data-strike-price");
+                            }
+                            for(let i=0;i<response.data.length;i++){
+                                let option=$("<option/>").val(response.data[i].expiryDate).attr("data-json", JSON.stringify(response.data[i].strikePrices)).append(response.data[i].expiryDate);
                                 if(i==0){
-                                    $(".stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
-                                    $(".stock-trade-lot-size-input").val(response.data[i].lotSize);
+                                    $("#stock-trade-modal .stock-trade-fno-symbol-input").val(response.data[i].iciciSymbol);
+                                    $("#stock-trade-modal .stock-trade-lot-size-input").val(response.data[i].lotSize);
                                 }
-                                $("#stock-trade-modal .stock-trade-expiry").append(
-                                    $("<option/>").val(response.data[i].expiryDate).attr("data-json", JSON.stringify(response.data[i].strikePrices)).append(response.data[i].expiryDate)
-                                );
+                                if(expiryDate!=null&&response.data[i].expiryDate==expiryDate){
+                                    option.prop("selected", true);
+                                    if(expiryDate!=null){
+                                        option.attr("data-strike-price", strikePrice);
+                                    }
+                                }
+                                $("#stock-trade-modal .stock-trade-expiry").append( option );
                             }
                             $("#stock-trade-modal .stock-trade-expiry").change();
                         }
                     }
                 });
+            }
+
+            if($(this).attr("data-extra-params")&&$(this).attr("data-extra-params")!=""){
+                $("#stock-trade-modal .stock-trade-extra-params").val($(this).attr("data-extra-params"));
             }
 
             if($(this).attr("data-quantity")&&$(this).attr("data-quantity")!=""){
@@ -629,6 +728,10 @@
 
             if($(this).attr("data-price")&&$(this).attr("data-price")!=""){
                 tempSettings.price=$(this).attr("data-price");
+            }
+
+            if($(this).attr("data-option-type")&&$(this).attr("data-option-type")!=""){
+                tempSettings.optionType=$(this).attr("data-option-type");
             }
 
             if($(this).attr("data-product")&&$(this).attr("data-product")!=""){
@@ -667,9 +770,10 @@
                 tempSettings.slTrigger=$(this).attr("data-stoploss-trigger");
             }
 
-            $("#stock-trade-modal .stock-trade-symbol").text(tempSettings.symbol);            
+            $("#stock-trade-modal .stock-trade-symbol").text(tempSettings.symbol);
             $("#stock-trade-modal .stock-trade-symbol-input").val(tempSettings.symbol);
             $("#stock-trade-modal .stock-trade-type-input").val(tempSettings.tradeType);
+            $("#stock-trade-modal .stock-trade-id").val(tempSettings.id||"");
 
             if(tempSettings.tradeType=="buy"){
                 $("#stock-trade-modal .stock-trade-buy-button").removeClass("hidden");
@@ -683,6 +787,7 @@
             $("#stock-trade-modal .stock-trade-price").val(tempSettings.price);
             $("#stock-trade-modal .stock-trade-product[value="+tempSettings.product+"]").prop("checked", true);
             $("#stock-trade-modal .stock-trade-order[value="+tempSettings.order+"]").prop("checked", true);
+            $("#stock-trade-modal .stock-trade-option-type[value="+tempSettings.optionType+"]").prop("checked", true);
             $("#stock-trade-modal .stock-trade-trigger").val(tempSettings.trigger);
             $("#stock-trade-modal .stock-trade-stoploss").val(tempSettings.stoploss);
             $("#stock-trade-modal .stock-trade-target").val(tempSettings.target);
