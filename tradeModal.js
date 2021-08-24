@@ -15,25 +15,198 @@
                     return;
                 }
 
-                if(!$(elms[i]).attr("data-price")||$(elms[i]).attr("data-price")==""){
-                    console.error("Stock price not defined. Please define stock price in 'data-price' attribute of the trigger button.");
+                if(!$(elms[i]).attr("data-instrument")||$(elms[i]).attr("data-instrument")==""){
+                    console.error("Instrument not defined. Please define instrument in 'data-instrument' attribute of the trigger button.");
                     return;
                 }
             }
         }
+
+        
         $(this).click(function(e){
             e.preventDefault();
+            
             $("#stock-trade-details-modal .stock-trade-symbol").text($(this).attr("data-symbol"));
-            $("#stock-trade-details-modal .stock-trade-type").text($(this).attr("data-trade-type"));
-            $("#stock-trade-details-modal .stock-trade-price").text($(this).attr("data-trade-price"));
+            $("#stock-trade-details-modal .stock-trade-type").text($(this).attr("data-trade-type").toUpperCase());
+            $("#stock-trade-details-modal .stock-trade-instrument").text($(this).attr("data-instrument").toUpperCase());
 
+            $("#stock-trade-details-modal .trade-modification-details tbody").empty();
 
-            if($(this).attr("data-target")&&$(this).attr("data-target")!=""){
-
+            const ref=$(this).attr("data-id");
+            let obj={};
+            let url="dummydata/orderBookDetailEquity.json", action="", subAction="";
+            $("#stock-trade-details-modal .order-ref").text(ref);
+            if($(this).attr("data-instrument")=="FUTURES"||$(this).attr("data-instrument")=="OPTIONS"){
+                url="/dummydata/orderBookDetailFnO.json";
+                action="a";
+                subAction="b";
+                obj={
+                    order_refernece: ref,
+                    order_flow: $(this).attr("data-trade-type")=="buy"?"B":"S"
+                }
             }else{
-
+                action="c";
+                subAction="d";
+                obj={
+                    ORDR_RFRNC: ref,
+                }
             }
-            $("#stock-trade-details-modal").modal("show");
+
+            $.ajax({
+                url:url,
+                data: {
+                    action: action,
+                    subAction: subAction,
+                    JSONPostData: JSON.stringify(obj)
+                },
+                method:"get",
+                context:$(this),
+                complete: function () {
+                },
+                success: function (data) {
+                    console.log(data);
+                    /*if (data.Status != "200") {
+                        if (data.Status == "tc-401") {
+                            alert("You're not authorised to perform this request. Please login and come back to this page. We're not redirecting you to the login page.");
+                            window.location.href = "/?pageView=iciciLogin";
+                            return;
+                        }
+                        else {
+                            alert(data.Error||data.Success.message);
+                        }
+                        return;
+                    }*/
+
+                    if($(this).attr("data-instrument")=="EQUITY"){
+                        for(let i=0;i<data.length;i++){
+                            let d=data[i];
+                            let bodytr=$("<tr/>");
+                            bodytr
+                                .append(
+                                    $("<td/>").text(d.order_modification_counter)
+                                )
+                                .append(
+                                    $("<td/>").text(d.order_xchng_ack_tm)
+                                );
+                            let detailsTd=$("<td/>");
+                            let row=$("<div/>").addClass("row");
+                            let col=$("<div/>").addClass("col-xs-12");
+                            col.append(
+                                $("<div/>").addClass("row")
+                                    .append(
+                                        $("<label/>").addClass("col-sm-4 control-label").append("Price")
+                                    )
+                                    .append(
+                                        $("<div/>").addClass("col-sm-8").append(d.order_rate)
+                                    )
+                            );
+                            row.append(col);
+                            col=$("<div/>").addClass("col-xs-12");
+                            col.append(
+                                $("<div/>").addClass("row")
+                                    .append(
+                                        $("<label/>").addClass("col-sm-4 control-label").append("Quantity")
+                                    )
+                                    .append(
+                                        $("<div/>").addClass("col-sm-8").append(d.order_qty)
+                                    )
+                            );
+                            row.append(col);
+                            col=$("<div/>").addClass("col-xs-12");
+                            col.append(
+                                $("<div/>").addClass("row")
+                                    .append(
+                                        $("<label/>").addClass("col-sm-4 control-label").append("Stoploss Price")
+                                    )
+                                    .append(
+                                        $("<div/>").addClass("col-sm-8").append(d.order_stp_loss_price)
+                                    )
+                            );
+                            row.append(col);
+                            col=$("<div/>").addClass("col-xs-12");
+                            col
+                                .append(
+                                    $("<label/>").addClass("control-label").append("Remarks")
+                                )
+                                .append(
+                                    $("<div/>").append(d.order_remarks)
+                                );
+                            row.append(col);
+                            detailsTd.append(row);
+                            bodytr.append(detailsTd);
+                            $("#stock-trade-details-modal .trade-modification-details tbody").append(bodytr);
+                        }
+                    }else{
+                                                
+                        for(let i=0;i<data.length;i++){
+                            let d=data[i];
+                            let bodytr=$("<tr/>");
+                            bodytr
+                                .append(
+                                    $("<td/>").text(d.ModificationNumber)
+                                )
+                                .append(
+                                    $("<td/>").text(d.ExchangeAcknowledgementDate)
+                                );
+                            let detailsTd=$("<td/>");
+                            let row=$("<div/>").addClass("row");
+                            let col=$("<div/>").addClass("col-xs-12");
+                            col.append(
+                                $("<div/>").addClass("row")
+                                    .append(
+                                        $("<label/>").addClass("col-sm-4 control-label").append("Price")
+                                    )
+                                    .append(
+                                        $("<div/>").addClass("col-sm-8").append(d.Price)
+                                    )
+                            );
+                            row.append(col);
+                            col=$("<div/>").addClass("col-xs-12");
+                            col.append(
+                                $("<div/>").addClass("row")
+                                    .append(
+                                        $("<label/>").addClass("col-sm-4 control-label").append("Quantity")
+                                    )
+                                    .append(
+                                        $("<div/>").addClass("col-sm-8").append(d.Quantity)
+                                    )
+                            );
+                            row.append(col);
+                            col=$("<div/>").addClass("col-xs-12");
+                            col.append(
+                                $("<div/>").addClass("row")
+                                    .append(
+                                        $("<label/>").addClass("col-sm-4 control-label").append("SLTPPrice")
+                                    )
+                                    .append(
+                                        $("<div/>").addClass("col-sm-8").append(d.SLTPPrice)
+                                    )
+                            );
+                            row.append(col);
+                            col=$("<div/>").addClass("col-xs-12");
+                            col
+                                .append(
+                                    $("<label/>").addClass("control-label").append("Remarks")
+                                )
+                                .append(
+                                    $("<div/>").append(d.Remarks)
+                                );
+                            row.append(col);
+                            detailsTd.append(row);
+                            bodytr.append(detailsTd);
+                            $("#stock-trade-details-modal .trade-modification-details tbody").append(bodytr);
+                        }
+                        //$("#stock-trade-details-modal .trade-modification-details thead, #stock-trade-details-modal .trade-modification-details tbody").empty();
+
+                    }
+                    
+                    $("#stock-trade-details-modal").modal("show");                    
+                }                
+            });
+
+
+
+            
         });
     }
  
@@ -306,12 +479,12 @@
                                                     <label class="radio-inline">
                                                         <input type="radio" name="stock-trade-order" class="stock-trade-order" value="limit"/> LIMIT
                                                     </label>
-                                                    <!--<label class="radio-inline">
+                                                    <label class="radio-inline">
                                                         <input type="radio" name="stock-trade-order" class="stock-trade-order" value="sl"/> SL
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="stock-trade-order" class="stock-trade-order" value="slm"/> SLM
-                                                    </label>-->
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -328,16 +501,16 @@
                                         </div>
                                     </div>
                                     -->
-                                    <!-- <div class="col-xs-12 stoploss-input-wrapper">
+                                    <div class="col-xs-12 stoploss-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
-                                                <label for="stock-trade-stoploss" class="col-sm-3 control-label">Stoploss (%)</label>
+                                                <label for="stock-trade-stoploss" class="col-sm-3 control-label">Stoploss</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" step="0.01" class="form-control stock-trade-stoploss" placeholder="Stoploss" value="1" />
+                                                    <input type="number" step="0.01" class="form-control stock-trade-stoploss" placeholder="Stoploss" value="0" />
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     <!--<div class="col-xs-12 target-input-wrapper">
                                         <div class="form-group">
                                             <div class="row">
@@ -418,18 +591,19 @@
 
             // Logics of trade modal
             $("#stock-trade-modal input[name='stock-trade-product']").change(function(e){
-                if($("#stock-trade-modal input[name='stock-trade-product']:checked").val()=="cnc"){
+                /*if($("#stock-trade-modal input[name='stock-trade-product']:checked").val()=="cnc"){                    
                     $("#stock-trade-modal .target-input-wrapper, #stock-trade-modal .stoploss-input-wrapper").removeClass("hidden");
                 }else{
                     $("#stock-trade-modal .target-input-wrapper, #stock-trade-modal .stoploss-input-wrapper").addClass("hidden");
-                }
+                }*/
             });
         
             $("#stock-trade-modal input[name='stock-trade-order']").change(function(e){
                 if($("#stock-trade-modal input[name='stock-trade-order']:checked").val()=="sl"||$("#stock-trade-modal input[name='stock-trade-order']:checked").val()=="slm"){
                     $("#stock-trade-modal .trigger-input-wrapper").removeClass("hidden");
+                    $("#stock-trade-modal .stoploss-input-wrapper").removeClass("hidden");
                 }else{
-                    $("#stock-trade-modal .trigger-input-wrapper").addClass("hidden");
+                    $("#stock-trade-modal .stoploss-input-wrapper").addClass("hidden");
                 }
         
                 if($("#stock-trade-modal input[name='stock-trade-order']:checked").val()=="market"||$("#stock-trade-modal input[name='stock-trade-order']:checked").val()=="slm"){
@@ -484,11 +658,13 @@
                 e.preventDefault();
                 console.log("Change triggered.");
                 if($("#stock-trade-modal .stock-trade-instrument").val()=="FUTURES"){
-                    let ltp=$(this).find("option:selected").attr("data-ltp");
-                    let ltt=$(this).find("option:selected").attr("data-last-traded-time");
-                    $("#stock-trade-modal .stock-trade-price").val(ltp);
-                    $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
-
+                    if(!$(this).prop("disabled")){
+                        let ltp=$(this).find("option:selected").attr("data-ltp");
+                        let ltt=$(this).find("option:selected").attr("data-last-traded-time");
+    
+                        $("#stock-trade-modal .stock-trade-price").val(ltp);
+                        $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);    
+                    }
                 }else if($("#stock-trade-modal .stock-trade-instrument").val()=="OPTIONS"){
                     let json=JSON.parse($(this).find("option:selected").attr("data-json"));
                     $("#stock-trade-modal .stock-trade-strike-price").empty();
@@ -527,14 +703,17 @@
 
             $("#stock-trade-modal .stock-trade-strike-price").change(function(){
                 if($("#stock-trade-modal .stock-trade-option-type:checked").val()=="CE"){
-                    $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
-                    let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
-                    $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
+                    if(!$(this).prop("disabled")){
+                        $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-call-price"));
+                        let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
+                        $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
+                    }
                 }else{
-                    $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
-                    let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
-                    $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
-
+                    if(!$(this).prop("disabled")){
+                        $("#stock-trade-modal .stock-trade-price").val($("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-put-price"));
+                        let ltt=$("#stock-trade-modal .stock-trade-strike-price option:selected").attr("data-last-traded-time");
+                        $("#stock-trade-modal .stock-trade-last-traded-time").text(ltt);
+                    }
                 }
             });
 
@@ -574,6 +753,7 @@
                 tempSettings.validity=$(this).find(".stock-trade-validity:checked").val();
                 tempSettings.discQuantity=$(this).find(".stock-trade-disc-quantity").val();
                 tempSettings.indstk=$(this).find(".stock-trade-indstk").val();
+                tempSettings.stoploss=$(this).find(".stock-trade-stoploss").val();
 
                 console.log("Order 0.1: ", {...tempSettings}, $(this).find(".stock-trade-order:checked").val());
 
@@ -671,6 +851,7 @@
                                 
                                 $("#stock-trade-modal .stock-trade-expiry").append( option );
                             }
+
                             $("#stock-trade-modal .stock-trade-expiry").change();
                         }
                     }
@@ -710,6 +891,10 @@
                                     }
                                 }
                                 $("#stock-trade-modal .stock-trade-expiry").append( option );
+                            }
+                            if($(this).attr("data-quantity")&&$(this).attr("data-quantity")!=""){
+                                tempSettings.noOfLots=$(this).attr("data-quantity")/response.data[0].lotSize;
+                                $("#stock-trade-modal .stock-trade-lots").val(tempSettings.noOfLots);
                             }
                             $("#stock-trade-modal .stock-trade-expiry").change();
                         }

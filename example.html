@@ -45,12 +45,7 @@
 
 
     <h1>View order details</h1>
-    <button class="btn btn-success btn-show-trade-details" data-id="1" data-symbol="ASHOKLEY" data-instrument="OPTIONS"
-        data-price="120" data-trade-type="buy" data-quantity="10" data-instrument="EQUITY" data-exchange="NSE"
-        data-option-type="PUT" data-expiry="30-Sep-2021" data-strike-price="281.5" data-quantity="100"
-        data-no-of-lots="2" data-product="cnc" data-order="market" data-variety="rglr" data-validity="day"
-        data-disc-quantity="0" data-stoploss-trigger="110">Show order details</button>
-
+    <button class="btn btn-success btn-show-trade-details" data-id="1" data-trade-type="buy" data-symbol="NIFTY" data-instrument="EQUITY">Show order details</button>
 
     <div class="modal fade stock-trade-details-modal" id="stock-trade-details-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -71,7 +66,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title stock-trade-symbol"></h4>
-                    <div class="stock-trade-spot-price">Spot price: <span></span></div>
+                    <span class="text-muted small">(Order reference no. <span class="order-ref"></span>)</span>
                 </div>
 
                 <div class="modal-body">
@@ -79,8 +74,8 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="stock-trade-type" class="col-sm-2 control-label">Trade Type</label>
-                                    <div class="col-sm-10 stock-trade-type"></div>
+                                    <label for="stock-trade-type" class="col-sm-4 control-label">Trade Type</label>
+                                    <div class="col-sm-8 stock-trade-type"></div>
                                 </div>
                             </div>
                         </div>
@@ -88,154 +83,104 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label for="stock-trade-instrument"
-                                        class="col-sm-2 control-label">Instrument</label>
-                                    <div class="col-sm-10 stock-trade-instrument"></div>
+                                        class="col-sm-4 control-label">Instrument</label>
+                                    <div class="col-sm-8 stock-trade-instrument"></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xs-12">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-exchange" class="col-sm-2 control-label">Exchange</label>
-                                    <div class="col-sm-10 stock-trade-exchange"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 stock-trade-option-type-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-option-type" class="col-sm-2 control-label">Option
-                                        Type</label>
-                                    <div class="col-sm-10 stock-trade-option-type"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 stock-trade-expiry-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-expiry" class="col-sm-3 control-label">Expiry Date</label>
-                                    <div class="col-sm-9 stock-trade-expiry"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 stock-trade-strike-price-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-strike-price" class="col-sm-3 control-label">Strike
-                                        Price</label>
-                                    <div class="col-sm-9 stock-trade-strike-price"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6 stock-trade-quantity-wrapper">
-                            <div class="form-group">
-                                <label for="stock-trade-quantity">Quantity</label>
-                                <div class="stock-trade-quantity"></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 stock-trade-lots-wrapper">
-                            <div class="form-group">
-                                <label for="stock-trade-lots">Number of Lots</label>
-                                <div class="stock-trade-lots"></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label for="stock-trade-price">Price</label>
-                                <div class="stock-trade-price"></div>
-                                <div class="stock-trade-last-traded-time"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 stock-trade-product-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-product" class="col-sm-2 control-label">Product</label>
-                                    <div class="col-sm-10 stock-trade-product"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 m-t-2">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-order" class="col-sm-2 control-label">Order</label>
-                                    <div class="col-sm-10 stock-trade-order"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--
-                        <div class="col-xs-12 trigger-input-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-trigger" class="col-sm-3 control-label">Trigger</label>
-                                    <div class="col-sm-9">
-                                        <input type="number"  min="0" step="0.01" class="form-control stock-trade-trigger" placeholder="Trigger" value="1" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-                        <!-- <div class="col-xs-12 stoploss-input-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-stoploss" class="col-sm-3 control-label">Stoploss (%)</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" step="0.01" class="form-control stock-trade-stoploss" placeholder="Stoploss" value="1" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!--<div class="col-xs-12 target-input-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-product" class="col-sm-3 control-label">Target (%)</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" step="0.01" max="100" min="0" class="form-control stock-trade-target" placeholder="Target" value="1" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-                        <div class="col-xs-12 m-t-2">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-variety" class="col-sm-2 control-label">Variety</label>
-                                    <div class="col-sm-10 stock-trade-variety"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 m-t-2 validity-input-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-validity" class="col-sm-2 control-label">Validity</label>
-                                    <div class="col-sm-10 stock-trade-validity">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 disc-quantity-input-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-quantity" class="col-sm-3 control-label">Disc.
-                                        Quantity</label>
-                                    <div class="col-sm-9 stock-trade-disc-quantity">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 stoploss-trigger-input-wrapper">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="stock-trade-stoploss-trigger" class="col-sm-3 control-label">SL
-                                        Trigger</label>
-                                    <div class="col-sm-9 stock-trade-stoploss-trigger"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 text-center">
-                            <div class="help-block text-red"></div>
+                            <table class="table trade-modification-details">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-1">#</th>
+                                        <th class="col-xs-4">
+                                            Datetime
+                                        </th>
+                                        <th class="col-xs-7">
+                                            Details
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>22-Aug-2021 17:13:19</td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <label for=""
+                                                            class="col-sm-4 control-label">Price</label>
+                                                        <div class="col-sm-8">9100</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <label for=""
+                                                            class="col-sm-4 control-label">Quantity</label>
+                                                        <div class="col-sm-8">50</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <label for=""
+                                                            class="col-sm-4 control-label">SLTPPrice</label>
+                                                        <div class="col-sm-8">0</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <label for="" class="control-label">Remarks</label>
+                                                    <div class="">*CANCELLED BY CLIENT*CANCELLED BY CLIENT-Cancellation Accepted</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>22-Aug-2021 17:13:19</td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label for=""
+                                                                class="col-sm-4 control-label">Price</label>
+                                                            <div class="col-sm-8">9100</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label for=""
+                                                                class="col-sm-4 control-label">Quantity</label>
+                                                            <div class="col-sm-8">50</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label for=""
+                                                                class="col-sm-4 control-label">SLTPPrice</label>
+                                                            <div class="col-sm-8">0</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                            <label for="" class="control-label">Remarks</label>
+                                                            <div class="">*CANCELLED BY CLIENT*CANCELLED BY CLIENT-Cancellation Accepted</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -287,7 +232,7 @@
                     success: function (data) {
                         console.log(data);
                         if (data.Status != "200") {
-                            if (data.Status == "401") {
+                            if (data.Status == "tc-401") {
                                 alert("You're not authorised to perform this request. Please login and come back to this page. We're not redirecting you to the login page.");
                                 window.location.href = "/?pageView=iciciLogin";
                                 return;
@@ -307,6 +252,7 @@
             $(".btn-show-trade-details").tradeDetailsModal();
 
             $(".buy-button, .sell-button").tradeModal({
+                product:"mis",
                 onSubmit: function (data, extraParams) {
                     console.log(data);
                     console.log(extraParams);
@@ -325,24 +271,23 @@
                                 ...extraParams,
                                 order_reference: data.id,
                                 new_order_qty: data.quantity,
-                                new_order_rate: data.order == "market" ? 0 : data.price,
-                                new_order_stp_loss_price: 0,
+                                new_order_rate: data.order == "market" || data.order == "slm" ? 0 : data.price,
+                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
                                 new_order_disclosed_qty: data.discQuantity,
-                                new_ord_typ: data.order == "market" ? "M" : "L",
+                                new_ord_typ: data.order == "market"||data.order == "slm" ? "M" : "L",
                                 new_order_validity: data.validity == "day" ? "T" : "I",
                             }
-
                         } else {
                             obj = {
                                 order_stock_cd: data.symbol,
                                 order_xchng_cd: "NSE",
                                 order_product: data.product == "cnc" ? "CASH" : "MARGIN",
-                                order_type: data.order == "market" ? "M" : "L",
+                                order_type: data.order == "market" || data.order == "slm" ? "M" : "L",
                                 order_validity: data.validity == "day" ? "T" : "I",
                                 order_quantity: data.quantity,
-                                order_rate: data.order == "market" ? 0 : data.price,
+                                order_rate: data.order == "market"||data.order=="slm" ? 0 : data.price,
                                 order_flow: data.tradeType == "buy" ? "B" : "S",
-                                order_stp_loss_price: 0,
+                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
                                 order_disclosed_qty: data.discQuantity
                             };
                         }
@@ -353,11 +298,11 @@
                             obj = {
                                 ...extraParams,
                                 order_reference: data.id,
-                                new_order_type: data.order == "market" ? "M" : "L",
+                                new_order_type: data.order == "market" || data.order == "slm" ? "M" : "L",
                                 new_order_validity: data.validity == "day" ? "T" : "I",
                                 new_order_quantity: data.quantity,
-                                new_order_rate: data.order == "market" ? 0 : (data.price * 100),
-                                new_order_stp_loss_price: 0,
+                                new_order_rate: data.order=="market"||data.order=="slm" ? 0 : (data.price * 100),
+                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
                                 new_order_disclosed_qty: data.discQuantity,
                                 prdct_typ: "F",
                                 undrlyng: data.fnoSymbol,
@@ -373,11 +318,11 @@
                                 order_product: "F",
                                 order_exp_date: data.expiry,
                                 order_strike_price: data.strikePrice * 100,
-                                order_type: data.order == "market" ? "M" : "L",
+                                order_type: data.order=="market"||data.order=="slm" ? "M" : "L",
                                 order_quantity: data.lotSize * data.noOfLots,
                                 order_rate: data.order == "market" ? 0 : (data.price * 100),
                                 order_flow: data.tradeType == "buy" ? "B" : "S",
-                                order_stp_loss_price: 0,
+                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
                                 order_disclosed_qty: data.discQuantity,
                                 order_opt_exer_type: "*E",
                                 order_validity: "T",
@@ -391,11 +336,11 @@
                             obj = {
                                 ...extraParams,
                                 order_reference: data.id,
-                                new_order_type: data.order == "market" ? "M" : "L",
+                                new_order_type: data.order == "market"||data.order=="slm" ? "M" : "L",
                                 new_order_validity: data.validity == "day" ? "T" : "I",
                                 new_order_quantity: data.quantity,
-                                new_order_rate: data.order == "market" ? 0 : (data.price * 100),
-                                new_order_stp_loss_price: 0,
+                                new_order_rate: data.order == "market"||data.order=="slm" ? 0 : (data.price * 100),
+                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
                                 new_order_disclosed_qty: data.discQuantity,
                                 prdct_typ: "O",
                                 undrlyng: data.fnoSymbol,
@@ -411,11 +356,11 @@
                                 order_product: "O",
                                 order_exp_date: data.expiry,
                                 order_strike_price: data.strikePrice * 100,
-                                order_type: data.order == "market" ? "M" : "L",
+                                order_type: data.order == "market"||data.order=="slm" ? "M" : "L",
                                 order_quantity: data.lotSize * data.noOfLots,
-                                order_rate: data.order == "market" ? 0 : (data.price * 100),
+                                order_rate: data.order == "market"||data.order=="slm" ? 0 : (data.price * 100),
                                 order_flow: data.tradeType == "buy" ? "B" : "S",
-                                order_stp_loss_price: 0,
+                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
                                 order_disclosed_qty: data.discQuantity,
                                 order_opt_exer_type: data.optionType,
                                 order_validity: "T",
