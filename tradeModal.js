@@ -22,6 +22,80 @@
             }
         }
 
+        if($("#stock-trade-details-modal").length==0){
+            const modalHTML=`
+            <div class="modal fade stock-trade-details-modal" id="stock-trade-details-modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="loader hidden">
+                            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100"
+                                enable-background="new 0 0 0 0" xml:space="preserve">
+                                <path fill="#666"
+                                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                                </path>
+                            </svg>
+                        </div>
+        
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title stock-trade-symbol"></h4>
+                            <span class="text-muted small">(Order reference no. <span class="order-ref"></span>)</span>
+                        </div>
+        
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label for="stock-trade-type" class="col-sm-4 control-label">Trade Type</label>
+                                            <div class="col-sm-8 stock-trade-type"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label for="stock-trade-instrument"
+                                                class="col-sm-4 control-label">Instrument</label>
+                                            <div class="col-sm-8 stock-trade-instrument"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table trade-modification-details">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-xs-1">#</th>
+                                                <th class="col-xs-4">
+                                                    Datetime
+                                                </th>
+                                                <th class="col-xs-7">
+                                                    Details
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            $("body").append(modalHTML);
+        }
+
         
         $(this).click(function(e){
             e.preventDefault();
