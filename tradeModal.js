@@ -112,15 +112,15 @@
             $("#stock-trade-details-modal .order-ref").text(ref);
             if($(this).attr("data-instrument")=="FUTURES"||$(this).attr("data-instrument")=="OPTIONS"){
                 url="/dummydata/orderBookDetailFnO.json";
-                action="a";
-                subAction="b";
+                action="cashOrder";
+                subAction="cashOrderBookDetails";
                 obj={
                     order_refernece: ref,
                     order_flow: $(this).attr("data-trade-type")=="buy"?"B":"S"
                 }
             }else{
-                action="c";
-                subAction="d";
+                action="foOrder";
+                subAction="foOrderBookDetails";
                 obj={
                     ORDR_RFRNC: ref,
                 }
