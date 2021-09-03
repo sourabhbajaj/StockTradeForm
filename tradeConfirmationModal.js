@@ -47,7 +47,7 @@ $(document).ready(function(){
                 e.preventDefault();
                 const rows=$("#trade-confirmation-modal table tbody tr");
                 const trades=[];
-                for(let i=0;i<rows.length;i++){
+                for(let i=0;i<rows.length-1;i++){
                     const columns=$(rows[i]).find("td");
                     const obj={
                         "Basket_ORD_STCK_CD":$(columns[0]).find("a").text(),
@@ -79,6 +79,7 @@ $(document).ready(function(){
                         subAction: "placeBasketOrder",
                         JSONPostData:JSON.stringify(obj)
                     },
+                    method:"post",
                     beforeSend:function(){
                         $("#stock-trade-modal .loader").removeClass("hidden");
                     },
@@ -94,10 +95,26 @@ $(document).ready(function(){
 
         $(this).click(function(e){
             e.preventDefault();
+            console.log("Button clicked");
             const tableRef=$($(this).attr("data-trade-details-table"));
             $("#trade-confirmation-modal table tbody").empty();
             $("#trade-confirmation-modal table tbody").append(
                 $(tableRef).find("tbody").html()
+            );
+
+            const rows=$("#trade-confirmation-modal table tbody tr");
+            let totalValue=0;
+            for(let i=0;i<rows.length;i++){
+                const columns=$(rows[i]).find("td");
+                const invValue=parseFloat($(columns[3]).text());
+                totalValue+=invValue;
+            }
+            $("#trade-confirmation-modal table tbody").append(
+                $("<tr/>").append(
+                    $("<td/>").attr("colspan", 3).append("Total Investment Value")
+                ).append(
+                    $("<td/>").append(totalValue)
+                )
             );
             $("#trade-confirmation-modal").modal("show");
         });
