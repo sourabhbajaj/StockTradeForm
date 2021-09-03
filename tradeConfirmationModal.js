@@ -18,6 +18,7 @@ $(document).ready(function(){
                         </div>
                         <div class="modal-body">
                             <h2>The following trades will be placed on confirmation.</h2>
+                            <div>The prices may vary based on the market.</div>
                             <div class="">
                                 <table style="width:100%;" class="table table-bordered table-striped">
                                     <thead>
