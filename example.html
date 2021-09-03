@@ -13,6 +13,7 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="tradeModal.js"></script>
+    <script src="tradeConfirmationModal.js"></script>
     <title>Hello, world!</title>
 </head>
 
@@ -31,9 +32,8 @@
     <h1>Options</h1>
     <button class="buy-button btn btn-success" data-id="7" data-extra-params='{"name":"sourabh"}' data-option-type="PE"
         data-symbol="ASHOKLEY" data-expiry="28-Oct-2021" data-strike-price="16450" data-instrument="OPTIONS"
-        data-price="120" data-trade-type="buy" data-quantity="10">B</button>
-    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-instrument="OPTIONS" data-price="120"
-        data-trade-type="sell">S</button>
+        data-price="120" data-trade-type="buy">B</button>
+    <button class="sell-button btn btn-danger" data-symbol="ASHOKLEY" data-instrument="OPTIONS" data-price="120" data-trade-type="sell">S</button>
 
     <h1>Cancel Order</h1>
     <button class="cancel-order btn btn-warning" data-id="3" data-product="cnc" data-order-type="buy"
@@ -47,10 +47,13 @@
     <h1>View order details</h1>
     <button class="btn btn-success btn-show-trade-details" data-id="1" data-trade-type="buy" data-symbol="NIFTY" data-instrument="EQUITY">Show order details</button>
 
-
+    <h1>Open trade confirmation modal</h1>
+    <button class="btn btn-success btn-open-trade-confirmation-modal" data-trade-details-table="#example">Confirm trade</button>
 
     <script>
         $(document).ready(function () {
+            $(".btn-open-trade-confirmation-modal").tradeConfirmationModal();
+
             $(".cancel-order").click(function (e) {
                 e.preventDefault();
                 if (!confirm("Are you sure you want to cancel this order?")) {
@@ -160,7 +163,7 @@
                                 new_order_validity: data.validity == "day" ? "T" : "I",
                                 new_order_quantity: data.quantity,
                                 new_order_rate: data.order=="market"||data.order=="slm" ? 0 : (data.price * 100),
-                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
+                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:(data.stoploss*100),
                                 new_order_disclosed_qty: data.discQuantity,
                                 prdct_typ: "F",
                                 undrlyng: data.fnoSymbol,
@@ -180,7 +183,7 @@
                                 order_quantity: data.lotSize * data.noOfLots,
                                 order_rate: data.order == "market" ? 0 : (data.price * 100),
                                 order_flow: data.tradeType == "buy" ? "B" : "S",
-                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
+                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:(data.stoploss*100),
                                 order_disclosed_qty: data.discQuantity,
                                 order_opt_exer_type: "*E",
                                 order_validity: "T",
@@ -198,7 +201,7 @@
                                 new_order_validity: data.validity == "day" ? "T" : "I",
                                 new_order_quantity: data.quantity,
                                 new_order_rate: data.order == "market"||data.order=="slm" ? 0 : (data.price * 100),
-                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
+                                new_order_stp_loss_price: data.order=="market"||data.order=="limit"?0:(data.stoploss*100),
                                 new_order_disclosed_qty: data.discQuantity,
                                 prdct_typ: "O",
                                 undrlyng: data.fnoSymbol,
@@ -218,7 +221,7 @@
                                 order_quantity: data.lotSize * data.noOfLots,
                                 order_rate: data.order == "market"||data.order=="slm" ? 0 : (data.price * 100),
                                 order_flow: data.tradeType == "buy" ? "B" : "S",
-                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:data.stoploss,
+                                order_stp_loss_price: data.order=="market"||data.order=="limit"?0:(data.stoploss*100),
                                 order_disclosed_qty: data.discQuantity,
                                 order_opt_exer_type: data.optionType,
                                 order_validity: "T",

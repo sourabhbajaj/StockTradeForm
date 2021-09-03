@@ -139,7 +139,7 @@
                 },
                 success: function (data) {
                     console.log(data);
-                    /*if (data.Status != "200") {
+                    if (data.Status != "200") {
                         if (data.Status == "tc-401") {
                             alert("You're not authorised to perform this request. Please login and come back to this page. We're not redirecting you to the login page.");
                             window.location.href = "/?pageView=iciciLogin";
@@ -149,11 +149,11 @@
                             alert(data.Error||data.Success.message);
                         }
                         return;
-                    }*/
+                    }
 
                     if($(this).attr("data-instrument")=="EQUITY"){
-                        for(let i=0;i<data.length;i++){
-                            let d=data[i];
+                        for(let i=0;i<data.Success.length;i++){
+                            let d=data.Success[i];
                             let bodytr=$("<tr/>");
                             bodytr
                                 .append(
@@ -212,8 +212,8 @@
                         }
                     }else{
                                                 
-                        for(let i=0;i<data.length;i++){
-                            let d=data[i];
+                        for(let i=0;i<data.Success.length;i++){
+                            let d=data.Success[i];
                             let bodytr=$("<tr/>");
                             bodytr
                                 .append(
@@ -367,9 +367,9 @@
                     $(elms[i]).attr("data-indstk", settings.indstk);
                 }
 
-                if(!$(elms[i]).attr("data-quantity")||$(elms[i]).attr("data-quantity")==""){
+                /*if(!$(elms[i]).attr("data-quantity")||$(elms[i]).attr("data-quantity")==""){
                     $(elms[i]).attr("data-quantity", settings.quantity);
-                }
+                }*/
         
                 if(!$(elms[i]).attr("data-instrument")||$(elms[i]).attr("data-instrument")==""){
                     $(elms[i]).attr("data-instrument", settings.instrument);
@@ -832,13 +832,13 @@
                 console.log("Order 0.1: ", {...tempSettings}, $(this).find(".stock-trade-order:checked").val());
 
 
-                if(tempSettings.product=="cnc"){
+                /*if(tempSettings.product=="cnc"){
                     tempSettings.stoploss=$(this).find(".stock-trade-stoploss").val();
                     tempSettings.target=$(this).find(".stock-trade-target").val();    
                 }else{
                     delete tempSettings.stoploss;
                     delete tempSettings.target;
-                }
+                }*/
 
                 if(tempSettings.order=="sl"||tempSettings.order=="slm"){
                     tempSettings.trigger=$(this).find(".stock-trade-target").val();
