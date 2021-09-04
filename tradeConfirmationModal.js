@@ -82,10 +82,10 @@ $(document).ready(function(){
                     },
                     method:"post",
                     beforeSend:function(){
-                        $("#stock-trade-modal .loader").removeClass("hidden");
+                        $("#trade-confirmation-modal .loader").removeClass("hidden");
                     },
                     complete:function(){
-                        $("#stock-trade-modal .loader").addClass("hidden");
+                        $("#trade-confirmation-modal .loader").addClass("hidden");
                     },
                     success:function(data){
                         console.log(data);

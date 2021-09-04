@@ -14,6 +14,7 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="tradeModal.js"></script>
     <script src="tradeConfirmationModal.js"></script>
+    <script src="chartTradeButtons.js"></script>
     <title>Hello, world!</title>
 </head>
 
@@ -50,8 +51,11 @@
     <h1>Open trade confirmation modal</h1>
     <button class="btn btn-success btn-open-trade-confirmation-modal" data-trade-details-table="#example">Confirm trade</button>
 
+    <h1>Charts Integration Container</h1>
+    <div id="charts-trade-buttons-container"></div>
     <script>
         $(document).ready(function () {
+            addChartButtons("#charts-trade-buttons-container", {});
             $(".btn-open-trade-confirmation-modal").tradeConfirmationModal();
 
             $(".cancel-order").click(function (e) {
