@@ -11,6 +11,7 @@ const addChartButtons=(container, data)=>{
         "data-instrument":"FUTURES"
     });
 
+    $(container).empty();
     $(container).append(buyButton).append(sellButton);
     $(".trade-button-"+newButtonId).tradeModal();
 }
